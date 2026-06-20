@@ -53,11 +53,11 @@ res.json(response.data);
 } catch (error) {
 console.error(error.message);
 
-```
+
 res.status(500).json({
   error: "Error al obtener donaciones"
 });
-```
+
 
 }
 });
@@ -66,7 +66,7 @@ res.status(500).json({
 app.post("/api/donaciones", async (req, res) => {
 try {
 
-```
+
 const payload = {
   tipo: req.body.tipo,
   cantidad: Number(req.body.cantidad),
@@ -80,17 +80,16 @@ const response = await axios.post(
 );
 
 res.status(201).json(response.data);
-```
 
 } catch (error) {
 
-```
+
 console.error(error.message);
 
 res.status(500).json({
   error: "Error al registrar donación"
 });
-```
+
 
 }
 });
@@ -103,23 +102,22 @@ res.status(500).json({
 app.get("/api/usuarios", async (req, res) => {
 try {
 
-```
 const response = await axios.get(
   USUARIOS_API
 );
 
 res.json(response.data);
-```
+
 
 } catch (error) {
 
-```
+
 console.error(error.message);
 
 res.status(500).json({
   error: "Error al obtener usuarios"
 });
-```
+
 
 }
 });
@@ -128,24 +126,24 @@ res.status(500).json({
 app.post("/api/usuarios", async (req, res) => {
 try {
 
-```
+
 const response = await axios.post(
   USUARIOS_API,
   req.body
 );
 
 res.status(201).json(response.data);
-```
+
 
 } catch (error) {
 
-```
+
 console.error(error.message);
 
 res.status(500).json({
   error: "Error al crear usuario"
 });
-```
+
 
 }
 });
@@ -158,23 +156,23 @@ res.status(500).json({
 app.get("/api/logistica", async (req, res) => {
 try {
 
-```
+
 const response = await axios.get(
   LOGISTICA_API
 );
 
 res.json(response.data);
-```
+
 
 } catch (error) {
 
-```
+
 console.error(error.message);
 
 res.status(500).json({
   error: "Error al obtener logística"
 });
-```
+
 
 }
 });
@@ -183,24 +181,24 @@ res.status(500).json({
 app.post("/api/logistica", async (req, res) => {
 try {
 
-```
+
 const response = await axios.post(
   LOGISTICA_API,
   req.body
 );
 
 res.status(201).json(response.data);
-```
+
 
 } catch (error) {
 
-```
+
 console.error(error.message);
 
 res.status(500).json({
   error: "Error al registrar logística"
 });
-```
+
 
 }
 });
@@ -213,7 +211,7 @@ app.get("/api/dashboard", async (req, res) => {
 
 try {
 
-```
+
 const [
   donaciones,
   usuarios,
@@ -247,17 +245,17 @@ res.json({
     logistica.data
 
 });
-```
+
 
 } catch (error) {
 
-```
+
 console.error(error.message);
 
 res.status(500).json({
   error: "Error al construir dashboard"
 });
-```
+
 
 }
 });
