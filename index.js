@@ -14,84 +14,76 @@ app.use(express.json());
 // MICROSERVICIOS KUBERNETES
 // =================================
 const DONACIONES_API =
-"http://donaton-services-service:8082/api/donaciones";
+  "http://donaton-services-service:8082/api/donaciones";
 
 const USUARIOS_API =
-"http://usuarios-service:8081/api/usuarios";
+  "http://usuarios-service:8081/api/usuarios";
 
 const LOGISTICA_API =
-"http://logistica-service:8083/api/logistica";
+  "http://logistica-service:8083/api/logistica";
 
 // =================================
 // HOME
 // =================================
 app.get("/", (req, res) => {
-res.json({
-mensaje: "BFF DONATON funcionando correctamente"
-});
+  res.json({
+    mensaje: "BFF DONATON funcionando correctamente",
+  });
 });
 
 // =================================
 // HEALTH CHECK
 // =================================
 app.get("/health", (req, res) => {
-res.json({
-status: "UP",
-servicio: "BFF DONATON"
-});
+  res.json({
+    status: "UP",
+    servicio: "BFF DONATON",
+  });
 });
 
 // =================================
 // DONACIONES
 // =================================
 
-// Obtener todas las donaciones
+// Obtener donaciones
 app.get("/api/donaciones", async (req, res) => {
-try {
-const response = await axios.get(DONACIONES_API);
-res.json(response.data);
-} catch (error) {
-console.error(error.message);
+  try {
+    const response = await axios.get(DONACIONES_API);
+    res.json(response.data);
+  } catch (error) {
+    console.error("ERROR DONACIONES:", error.message);
 
-
-res.status(500).json({
-  error: "Error al obtener donaciones"
-});
-
-
-}
+    res.status(500).json({
+      error: "Error al obtener donaciones",
+      detalle: error.message,
+    });
+  }
 });
 
 // Crear donación
 app.post("/api/donaciones", async (req, res) => {
-try {
+  try {
+    const payload = {
+      tipo: req.body.tipo,
+      cantidad: Number(req.body.cantidad),
+      ubicacion: req.body.ubicacion,
+      usuarioId: req.body.usuarioId,
+    };
 
+    const response = await axios.post(
+      DONACIONES_API,
+      payload
+    );
 
-const payload = {
-  tipo: req.body.tipo,
-  cantidad: Number(req.body.cantidad),
-  ubicacion: req.body.ubicacion,
-  usuarioId: req.body.usuarioId
-};
+    res.status(201).json(response.data);
+  } catch (error) {
+    console.error("ERROR CREAR DONACION:", error.message);
 
-const response = await axios.post(
-  DONACIONES_API,
-  payload
-);
-
-res.status(201).json(response.data);
-
-} catch (error) {
-
-
-console.error(error.message);
-
-res.status(500).json({
-  error: "Error al registrar donación"
-});
-
-
-}
+    res.status(500).json({
+      error: "Error al registrar donación",
+      detalle: error.message,
+    });
+  }
 });
 
 // =================================
@@ -100,52 +92,36 @@ res.status(500).json({
 
 // Obtener usuarios
 app.get("/api/usuarios", async (req, res) => {
-try {
+  try {
+    const response = await axios.get(USUARIOS_API);
+    res.json(response.data);
+  } catch (error) {
+    console.error("ERROR USUARIOS:", error.message);
 
-const response = await axios.get(
-  USUARIOS_API
-);
-
-res.json(response.data);
-
-
-} catch (error) {
-
-
-console.error(error.message);
-
-res.status(500).json({
-  error: "Error al obtener usuarios"
-});
-
-
-}
+    res.status(500).json({
+      error: "Error al obtener usuarios",
+      detalle: error.message,
+    });
+  }
 });
 
 // Crear usuario
 app.post("/api/usuarios", async (req, res) => {
-try {
+  try {
+    const response = await axios.post(
+      USUARIOS_API,
+      req.body
+    );
 
+    res.status(201).json(response.data);
+  } catch (error) {
+    console.error("ERROR CREAR USUARIO:", error.message);
 
-const response = await axios.post(
-  USUARIOS_API,
-  req.body
-);
-
-res.status(201).json(response.data);
-
-
-} catch (error) {
-
-
-console.error(error.message);
-
-res.status(500).json({
-  error: "Error al crear usuario"
-});
-
-
-}
+    res.status(500).json({
+      error: "Error al crear usuario",
+      detalle: error.message,
+    });
+  }
 });
 
 // =================================
@@ -154,125 +130,79 @@ res.status(500).json({
 
 // Obtener logística
 app.get("/api/logistica", async (req, res) => {
-try {
+  try {
+    const response = await axios.get(LOGISTICA_API);
+    res.json(response.data);
+  } catch (error) {
+    console.error("ERROR LOGISTICA:", error.message);
 
-
-const response = await axios.get(
-  LOGISTICA_API
-);
-
-res.json(response.data);
-
-
-} catch (error) {
-
-
-console.error(error.message);
-
-res.status(500).json({
-  error: "Error al obtener logística"
-});
-
-
-}
+    res.status(500).json({
+      error: "Error al obtener logística",
+      detalle: error.message,
+    });
+  }
 });
 
 // Crear logística
 app.post("/api/logistica", async (req, res) => {
-try {
+  try {
+    const response = await axios.post(
+      LOGISTICA_API,
+      req.body
+    );
 
+    res.status(201).json(response.data);
+  } catch (error) {
+    console.error("ERROR CREAR LOGISTICA:", error.message);
 
-const response = await axios.post(
-  LOGISTICA_API,
-  req.body
-);
-
-res.status(201).json(response.data);
-
-
-} catch (error) {
-
-
-console.error(error.message);
-
-res.status(500).json({
-  error: "Error al registrar logística"
-});
-
-
-}
+    res.status(500).json({
+      error: "Error al registrar logística",
+      detalle: error.message,
+    });
+  }
 });
 
 // =================================
 // DASHBOARD
 // =================================
-
 app.get("/api/dashboard", async (req, res) => {
+  try {
+    const [donaciones, usuarios, logistica] =
+      await Promise.all([
+        axios.get(DONACIONES_API),
+        axios.get(USUARIOS_API),
+        axios.get(LOGISTICA_API),
+      ]);
 
-try {
+    res.json({
+      totalDonaciones: donaciones.data.length,
+      totalUsuarios: usuarios.data.length,
+      totalLogistica: logistica.data.length,
 
+      donaciones: donaciones.data,
+      usuarios: usuarios.data,
+      logistica: logistica.data,
+    });
+  } catch (error) {
+    console.error("ERROR DASHBOARD:", error.message);
 
-const [
-  donaciones,
-  usuarios,
-  logistica
-] = await Promise.all([
-
-  axios.get(DONACIONES_API),
-  axios.get(USUARIOS_API),
-  axios.get(LOGISTICA_API)
-
-]);
-
-res.json({
-
-  totalDonaciones:
-    donaciones.data.length,
-
-  totalUsuarios:
-    usuarios.data.length,
-
-  totalLogistica:
-    logistica.data.length,
-
-  donaciones:
-    donaciones.data,
-
-  usuarios:
-    usuarios.data,
-
-  logistica:
-    logistica.data
-
-});
-
-
-} catch (error) {
-
-
-console.error(error.message);
-
-res.status(500).json({
-  error: "Error al construir dashboard"
-});
-
-
-}
+    res.status(500).json({
+      error: "Error al construir dashboard",
+      detalle: error.message,
+    });
+  }
 });
 
 // =================================
 // PUERTO
 // =================================
-
 const PORT = 3000;
 
 app.listen(PORT, () => {
-
-console.log("=================================");
-console.log(`🚀 BFF ejecutándose en puerto ${PORT}`);
-console.log(`📦 Donaciones -> ${DONACIONES_API}`);
-console.log(`👤 Usuarios -> ${USUARIOS_API}`);
-console.log(`🚚 Logística -> ${LOGISTICA_API}`);
-console.log("=================================");
-
+  console.log("=================================");
+  console.log(`🚀 BFF ejecutándose en puerto ${PORT}`);
+  console.log(`📦 Donaciones -> ${DONACIONES_API}`);
+  console.log(`👤 Usuarios -> ${USUARIOS_API}`);
+  console.log(`🚚 Logística -> ${LOGISTICA_API}`);
+  console.log("=================================");
 });
