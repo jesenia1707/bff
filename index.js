@@ -85,7 +85,6 @@ app.post("/api/donaciones", async (req, res) => {
     });
   }
 });
-
 // =================================
 // USUARIOS
 // =================================
@@ -123,6 +122,31 @@ app.post("/api/usuarios", async (req, res) => {
     });
   }
 });
+
+// LOGIN USUARIO
+app.post("/api/usuarios/login", async (req, res) => {
+  try {
+
+    const response = await axios.post(
+      `${USUARIOS_API}/login`,
+      req.body
+    );
+
+    res.json(response.data);
+
+  } catch (error) {
+
+    console.error("ERROR LOGIN:", error.message);
+
+    res.status(500).json({
+      error: "Error en login",
+      detalle: error.message,
+    });
+
+  }
+});
+
+
 
 // =================================
 // LOGISTICA
